@@ -11,9 +11,13 @@ setup:
   uv sync
   uv run pre-commit install
 
-# CPU smoke test, under 5 minutes
+# CPU smoke test, under 5 minutes: train through the phase change, then analyse
 quick:
-  uv run train.py --quick --run-name quick
+  #!/usr/bin/env bash
+  set -euo pipefail
+  name=quick-$(date +%Y%m%d-%H%M%S)
+  uv run train.py --quick --run-name "$name"
+  uv run analyze.py --run "runs/$name" --name smoke --device cpu
 
 # Full training run; pass flags through, e.g. just train --run-name wd1.0-seed0
 train *args:
@@ -24,8 +28,8 @@ predict run *args:
   uv run predict.py --run runs/{{run}} {{args}}
 
 # Baselines, probes, interventions and plots for a saved run
-analyze run:
-  uv run analyze.py --run runs/{{run}}
+analyze run *args:
+  uv run analyze.py --run runs/{{run}} {{args}}
 
 # Build the README figures: figures/src/*.tex -> figures/*.png (.agents/instructions/figure-design.md)
 figures:
@@ -61,6 +65,6 @@ fix:
 notebook name='explore':
   uv run marimo edit notebooks/{{name}}.py
 
-# Upload a run's weights, metrics and plots to the Hugging Face Hub
+# Upload a run's weights, metrics, plots and analyses to the Hugging Face Hub, in a folder named after the run
 push run:
-  uv run hf upload {{hf_user}}/{{repo}} runs/{{run}}
+  uv run hf upload {{hf_user}}/{{repo}} runs/{{run}} {{run}}
