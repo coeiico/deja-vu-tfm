@@ -108,6 +108,21 @@ remove an item that is done.
 - The look lives in `figures/tex/latentfig.sty`, identical in every repo of the project. Change
   a design value only when the user asks, and then in every copy.
 
+## Cloud Runs
+
+- `cloud.py` sends runs to Modal, one GPU per run. Before creating, changing or launching one,
+  read `./.agents/instructions/cloud.md`: when the cloud is worth it, how `cloud.py` works, and
+  its rules.
+- Never run anything on Modal unless the user explicitly gives permission for that launch: it
+  costs real money. This covers every command that starts a Modal container (`just cloud`,
+  `just cloud-train`, `modal run`, `modal shell`, `modal serve`, `modal deploy`), test and
+  smoke runs included. Before asking, state the GPU, the number of runs, the expected hours and
+  the estimated cost. A permission covers that launch only, not later ones or a relaunch after
+  a failure.
+- For this project the cloud is optional: every run fits the local GPU in under half an hour.
+  `SWEEPS['final']` repeats the runs the README reports, on an L4, and `prepare()` tokenises
+  TinyStories once before any sweep that trains on it.
+
 ## Project Overview
 
 deja-vu-tfm is project 4 of 18 in the Latent Space Project: small ML repos that test whether
@@ -120,6 +135,7 @@ open questions for all 18 repos live in the handoff doc: https://claude.ai/artif
   bookkeeping (device, seeding, run folders, metrics.json).
 - `train.py`, `predict.py`, `analyze.py` - separate CLIs (tyro), so analysis runs on saved
   weights without retraining.
+- `cloud.py` - the same runs on Modal, one GPU per run; see `.agents/instructions/cloud.md`.
 - `figures/` - README figures: LaTeX sources in `src/`, their data in `data/`, the house style
   in `tex/`, and the built PNGs the README shows.
 - `notebooks/` - marimo notebooks, saved as plain `.py` files.
@@ -128,8 +144,9 @@ open questions for all 18 repos live in the handoff doc: https://claude.ai/artif
 
 Every routine command is a just recipe: `just setup`, `just quick` (CPU smoke test, under 5
 minutes), `just train`, `just analyze <run>`, `just figures` (README figures), `just test`, and
-`just check` (Ruff and basedpyright, as in CI). Use uv for everything; no pip, conda or
-requirements.txt.
+`just check` (Ruff and basedpyright, as in CI). `just cloud <sweep>`, `just cloud-train` and
+`just cloud-get <run>` do the same on Modal (`cloud.py`). Use uv for everything; no pip, conda
+or requirements.txt.
 
 ## How to Work Here
 

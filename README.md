@@ -164,6 +164,14 @@ just check                                  # ruff and basedpyright, as in CI
 
 The first `--data stories` run downloads and tokenizes TinyStories into `data/` (about 4 minutes, 0.9 GB). Copy `.env.example` to `.env` (gitignored) for `HF_TOKEN` and `HF_USER`.
 
+Runs can also go to [Modal](https://modal.com), one cloud GPU per run, with the same flags. Log in once with `uv run modal setup`; [`.agents/instructions/cloud.md`](.agents/instructions/cloud.md) explains when it is worth it. These models are small, so a cloud GPU mostly buys parallel runs, not faster ones.
+
+```sh
+just cloud final                            # every run above, all at once, on Modal
+just cloud-train lr3e-3-seed0 '--optim.lr 3e-3'
+just cloud-get default-seed0                # copy a finished run into runs/
+```
+
 This repo builds on [tiny-transformer](https://github.com/coeiico/tiny-transformer), installed from GitHub. To work on both at once, run `uv add --editable ../tiny-transformer`, then switch back to the git source before committing.
 
 ## Layout
@@ -185,6 +193,7 @@ deja-vu-tfm/
 ├── train.py                 CLI; --quick runs the CPU smoke test
 ├── predict.py               watch a run copy a sequence or continue a story
 ├── analyze.py               baselines, head scores, ablations, path ablation, composition
+├── cloud.py                 the same runs on Modal, one GPU each; sweeps
 ├── figures/                 README figures: LaTeX sources, the data they read, built PNGs
 ├── notebooks/               marimo notebooks for exploration
 ├── tests/
