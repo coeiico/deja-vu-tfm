@@ -95,7 +95,7 @@ The owner knows the transformer from tiny-transformer. This is what is new here.
   - **Fresh loss** on everything else. This is the general-loss control.
 - **Training.** 8,000 steps, AdamW at a constant 1e-3, weight decay 0.01, batches of 64, loss on every next token. The step reported as the phase change is the first evaluation where copy loss falls below half of chance.
 
-**Text.** TinyStories (Eldan and Li 2023), pinned to a dataset revision and tokenized with GPT-2's BPE.
+**Text.** [TinyStories](https://huggingface.co/datasets/roneneldan/TinyStories) (Eldan and Li 2023), pinned to revision [`f54c09fd`](https://huggingface.co/datasets/roneneldan/TinyStories/tree/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64) and tokenized with GPT-2's BPE.
 - **Vocabulary.** The model keeps end-of-text, the 8,190 most common training tokens and UNK, which is 0.21% of tokens. The table is fitted on the training split only.
 - **Splits.** Training uses the dataset's train split. Its validation split is cut by story: the first half for validation, the second for test.
 - **Metrics.** Text loss and the in-context learning score. Heads are scored on the synthetic layout built from the 64 most common tokens.
@@ -205,7 +205,7 @@ deja-vu-tfm/
 
 - Olsson et al., "In-context Learning and Induction Heads" (2022).
 - Elhage et al., "A Mathematical Framework for Transformer Circuits" (2021): composition and composition scores.
-- Eldan and Li, "TinyStories: How Small Can Language Models Be and Still Speak Coherent English?" (2023).
+- Eldan and Li, "TinyStories: How Small Can Language Models Be and Still Speak Coherent English?" (2023). Dataset: [roneneldan/TinyStories](https://huggingface.co/datasets/roneneldan/TinyStories).
 - [LorenzoManfrediSegato/induction-heads](https://github.com/LorenzoManfrediSegato/induction-heads) and [NitzanBrain/toy-induction-lockout](https://github.com/NitzanBrain/toy-induction-lockout): small replications whose recipe (no LayerNorm, PyTorch's init, d_model 64) pointed to the init. The first reports the fixed-period shortcut; the second shows how other shortcuts can lock out induction heads in toy models.
 
 ## License
