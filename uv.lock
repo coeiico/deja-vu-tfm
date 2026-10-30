@@ -2750,7 +2750,7 @@ wheels = [
 [[package]]
 name = "tiny-transformer"
 version = "0.1.0"
-source = { git = "https://github.com/coeiico/tiny-transformer#19276f75392bee9d5f6f61820395002a0746e349" }
+source = { git = "https://github.com/coeiico/tiny-transformer#98528a907076922d753311d270abab97aaa63fdf" }
 dependencies = [
     { name = "einops" },
     { name = "huggingface-hub" },
