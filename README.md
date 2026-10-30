@@ -151,6 +151,7 @@ Needs [uv](https://docs.astral.sh/uv/) and [just](https://just.systems/). Everyt
 just setup                                  # uv sync, then install the pre-commit hooks
 just quick                                  # CPU smoke test: train through the phase change, analyse
 just train --run-name default-seed0         # the synthetic task, under 3 minutes on a GPU
+just bg train ...                           # the same, in a detached tmux session; any recipe works
 just train --run-name one-layer-seed0 --model.n-layers 1
 just train --run-name gpt2-init-seed0 --model.init gpt2
 just train --run-name stories-seed0 --data stories --model.d-model 256 --model.n-heads 8 --optim.steps 20000 --eval-every 250 --splits.val-size 256

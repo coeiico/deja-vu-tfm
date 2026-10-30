@@ -123,6 +123,12 @@ remove an item that is done.
   `SWEEPS['final']` repeats the runs the README reports, on an L4, and `prepare()` tokenises
   TinyStories once before any sweep that trains on it.
 
+## Local Runs
+
+- Start every local training run, sweep or long analysis in tmux with `just bg <recipe> [args]`,
+  for example `just bg train --run-name wd1.0-seed0`. `tmux ls` lists the sessions and
+  `tmux attach -t <session>` watches one; each session's output is also in `runs/logs/`.
+
 ## Project Overview
 
 deja-vu-tfm is project 4 of 18 in the Latent Space Project: small ML repos that test whether
