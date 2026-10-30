@@ -1,0 +1,54 @@
+{
+  "run": "stories-seed0",
+  "chance": {
+    "loss": 4.1588830833596715,
+    "previous": 0.05942684128170922,
+    "duplicate": 0.018665851169709768,
+    "induction": 0.018665851169709768
+  },
+  "phase_change_step": null,
+  "steps": 20000,
+  "heads": {
+    "previous-token": [
+      0,
+      7
+    ],
+    "duplicate-token": [
+      0,
+      1
+    ],
+    "induction": [
+      1,
+      4
+    ],
+    "layer-0 control": [
+      0,
+      2
+    ],
+    "layer-1 control": [
+      1,
+      1
+    ],
+    "induction heads": [
+      [
+        1,
+        4
+      ]
+    ],
+    "induction_threshold": 0.3
+  },
+  "trained": {
+    "copy_loss": 9.516133308410645,
+    "fresh_loss": 10.083085060119629,
+    "copy_accuracy": 0.017484907060861588,
+    "text_loss": 2.236126661300659,
+    "text_icl_score": -0.09187150001525879
+  },
+  "untrained": {
+    "copy_loss": 9.389875411987305,
+    "fresh_loss": 9.357706069946289,
+    "copy_accuracy": 0.00017086227308027446,
+    "text_loss": 9.32651138305664,
+    "text_icl_score": -0.04344654083251953
+  }
+}

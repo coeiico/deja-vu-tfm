@@ -1,0 +1,50 @@
+{
+  "run": "gpt2-init-seed0",
+  "chance": {
+    "loss": 4.1588830833596715,
+    "previous": 0.05942684128170922,
+    "duplicate": 0.018665851169709768,
+    "induction": 0.018665851169709768
+  },
+  "phase_change_step": null,
+  "steps": 8000,
+  "heads": {
+    "previous-token": [
+      0,
+      1
+    ],
+    "duplicate-token": [
+      0,
+      2
+    ],
+    "induction": [
+      1,
+      0
+    ],
+    "layer-0 control": [
+      0,
+      0
+    ],
+    "layer-1 control": [
+      1,
+      1
+    ],
+    "induction heads": [
+      [
+        1,
+        0
+      ]
+    ],
+    "induction_threshold": 0.3
+  },
+  "trained": {
+    "copy_loss": 3.341008186340332,
+    "fresh_loss": 4.193784713745117,
+    "copy_accuracy": 0.16553707420825958
+  },
+  "untrained": {
+    "copy_loss": 4.174325466156006,
+    "fresh_loss": 4.174393177032471,
+    "copy_accuracy": 0.015377605333924294
+  }
+}

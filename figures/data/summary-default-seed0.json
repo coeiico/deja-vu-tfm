@@ -1,0 +1,58 @@
+{
+  "run": "default-seed0",
+  "chance": {
+    "loss": 4.1588830833596715,
+    "previous": 0.05942684128170922,
+    "duplicate": 0.018665851169709768,
+    "induction": 0.018665851169709768
+  },
+  "phase_change_step": 3550,
+  "steps": 8000,
+  "heads": {
+    "previous-token": [
+      0,
+      1
+    ],
+    "duplicate-token": [
+      0,
+      0
+    ],
+    "induction": [
+      1,
+      3
+    ],
+    "layer-0 control": [
+      0,
+      3
+    ],
+    "induction heads": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "induction_threshold": 0.3
+  },
+  "trained": {
+    "copy_loss": 0.31044378876686096,
+    "fresh_loss": 4.21708345413208,
+    "copy_accuracy": 0.9222860932350159
+  },
+  "untrained": {
+    "copy_loss": 4.488768577575684,
+    "fresh_loss": 4.505484104156494,
+    "copy_accuracy": 0.015121311880648136
+  }
+}

@@ -1,0 +1,31 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{latentfig}
+\input{build/routes-values}
+\begin{document}
+\begin{figurecanvas}
+\begin{tikzpicture}
+% Row labels, top to bottom, at 0.36 cm per row (src/routes.py); slot 6 is the gap.
+\foreach \label [count=\slot from 0] in {
+    no ablation, identity patch (control), all induction heads, previous-token head,
+    duplicate-token head, unrelated layer-0 head (control), {},
+    previous-token head $\to$ Q, previous-token head $\to$ K, previous-token head $\to$ V,
+    duplicate-token head $\to$ Q, duplicate-token head $\to$ K, duplicate-token head $\to$ V,
+    unrelated head $\to$ Q, unrelated head $\to$ K, unrelated head $\to$ V} {
+  \node[font=\footnotesize, anchor=east] at (-0.15,-\slot*0.36) {\label};
+}
+\node[note, text=ink, anchor=south west] at (-5.0,0.35) {Mean-ablate whole heads:};
+\node[note, text=ink, anchor=south west] at (-5.0,-6*0.36-0.12) {Remove from one input of layer 1:};
+\foreach \run/\letter/\tag [count=\i from 0] in {default-seed0/a/A, default-seed1/b/B, default-seed2/c/C} {
+  \begin{scope}[shift={(\i*3.6,0)}]
+    \input{build/routes-\run.tikz}
+    \node[head] at (0,1.05) {(\letter)\enspace Seed \i.};
+    \node[note, anchor=north west, align=left] at (0,-15*0.36-0.3)
+      {previous-token \csname routesPrev\tag\endcsname,\\ duplicate-token \csname routesDup\tag\endcsname,\\ unrelated \csname routesControl\tag\endcsname};
+  \end{scope}
+}
+\node[note, anchor=north, align=center] at (2.4,-15*0.36-1.6)
+  {Bars: copy accuracy (\%) on 2\,048 test sequences. Dotted: no ablation. Red: copying collapses (below half of no ablation).\\
+   Q, K, V: the head's mean output replaces its real output only where layer 1 forms its queries, keys or values.};
+\end{tikzpicture}
+\end{figurecanvas}
+\end{document}

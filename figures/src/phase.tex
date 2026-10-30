@@ -1,0 +1,50 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{latentfig}
+\input{roles}
+\input{build/values}
+\pgfplotsset{
+  steps/.style={engraved, xmin=0, xmax=8000, xtick={0,2000,4000,6000,8000}, xlabel={step},
+    scaled x ticks=false, xticklabel style={/pgf/number format/1000 sep={\,}}},
+}
+\begin{document}
+\begin{figurecanvas}
+\begin{tikzpicture}
+\begin{axis}[steps, name=a, width=0.84\figwidth, height=0.29\figwidth,
+    ymin=0, ymax=4.8, ytick={0,1,2,3,4}, ylabel={loss on the copyable tokens (nats)}]
+  \addplot[level line, domain=0:8000] {\chanceloss};
+  \addplot[gpt2 init] table[x=step, y=copy_loss, col sep=comma] {data/curves-gpt2-init-seed0.csv};
+  \addplot[one layer] table[x=step, y=copy_loss, col sep=comma] {data/curves-one-layer-seed0.csv};
+  \foreach \s in {0,1,2} {
+    \addplot[induction model, line width=0.55pt] table[x=step, y=copy_loss, col sep=comma] {data/curves-default-seed\s.csv};
+  }
+  \node[note, text=soft, anchor=south east] at (axis cs:7950,\chanceloss) {chance, $\ln 64 = \chanceloss$};
+  \node[note, text=ink, anchor=north east, align=right] at (axis cs:7950,3.2)
+    {one layer (dashed): \copyOneLayer\% copied\\ two layers, GPT-2 init (dotted): \copyGptInit\%};
+  \node[note, text=spot, anchor=south west] at (axis cs:4300,0.95) {two layers, seeds 0 to 2: \copyA, \copyB\ and \copyC\% copied};
+\end{axis}
+\node[head] at ($(a.north west)+(0,0.25)$) {(a)\enspace Loss on the second copy, which only copying can predict.};
+
+\foreach \s/\letter/\tag [count=\i from 0] in {0/b/A, 1/c/B, 2/d/C} {
+  \begin{axis}[steps, name=p\s, at={($(a.south west)+(\i*0.305\figwidth,-1.75cm)$)}, anchor=north west,
+      width=0.265\figwidth, height=0.24\figwidth, ymin=0, ymax=1, ytick={0,0.5,1},
+      xtick={0,4000,8000}, ylabel={\ifnum\i=0 head score\fi}, yticklabels={\ifnum\i=0 0\fi,\ifnum\i=0 0.5\fi,\ifnum\i=0 1\fi}]
+    \addplot[level line] coordinates {(\csname phase\tag\endcsname,0) (\csname phase\tag\endcsname,1)};
+    \addplot[duplicate score] table[x=step, y=duplicate, col sep=comma] {data/curves-default-seed\s.csv};
+    \addplot[previous score] table[x=step, y=previous, col sep=comma] {data/curves-default-seed\s.csv};
+    \addplot[induction score] table[x=step, y=induction, col sep=comma] {data/curves-default-seed\s.csv};
+  \end{axis}
+  \node[head] at ($(p\s.north west)+(0,0.25)$) {(\letter)\enspace Seed \s.};
+}
+\node[note, text=spot, anchor=north east, knockout] at ($(p0.north east)+(-0.1,-0.25)$) {induction heads};
+\node[note, text=ink, anchor=north east, knockout] at ($(p0.north east)+(-0.1,-0.65)$) {previous-token \prevA};
+\node[note, text=ink, anchor=north east, knockout] at ($(p0.south east)!0.4!(p0.north east)+(-0.1,0)$) {duplicate-token \dupA, dashed};
+\node[note, text=ink, anchor=north east, knockout] at ($(p1.north east)+(-0.1,-0.25)$) {duplicate-token \dupB, dashed};
+\node[note, text=ink, anchor=south east, knockout] at ($(p1.south east)+(-0.1,0.25)$) {previous-token \prevB};
+\node[note, text=ink, anchor=north east, knockout] at ($(p2.north east)+(-0.1,-0.25)$) {duplicate-token \dupC, dashed};
+\node[note, text=ink, anchor=south east, knockout] at ($(p2.south east)+(-0.1,0.25)$) {previous-token \prevC};
+\node[note, anchor=north, align=center] at ($(p1.outer south)+(0,-0.05)$)
+  {Head scores on validation sequences: the share of attention each head puts on its own target key.\\
+   Red: the mean of the induction heads. Dotted: the step at which copy loss falls below half of chance.};
+\end{tikzpicture}
+\end{figurecanvas}
+\end{document}

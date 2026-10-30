@@ -1,0 +1,34 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{latentfig}
+\input{roles}
+\input{build/values}
+\pgfplotsset{
+  steps/.style={engraved, xmin=0, xmax=20000, xtick={0,5000,10000,15000,20000}, xlabel={step},
+    scaled x ticks=false, xticklabel style={/pgf/number format/1000 sep={\,}}},
+}
+\begin{document}
+\begin{figurecanvas}
+\begin{tikzpicture}
+\begin{axis}[steps, name=a, width=0.375\figwidth, height=0.29\figwidth,
+    ymin=-0.16, ymax=0.02, ytick={-0.15,-0.1,-0.05,0}, yticklabel style={/pgf/number format/fixed},
+    ylabel={late minus early loss (nats)}]
+  \addplot[level line, domain=0:20000] {0};
+  \addplot[series ink] table[x=step, y=icl_score, col sep=comma] {data/curves-stories-seed0.csv};
+  \node[note, text=ink, anchor=north east] at (axis cs:19500,-0.140) {$\storyIcl$ at step 20\,000};
+\end{axis}
+\begin{axis}[steps, name=b, at={($(a.east -| a.outer east)+(1.55cm,0)$)}, anchor=west,
+    width=0.375\figwidth, height=0.29\figwidth, ymin=0, ymax=1, ytick={0,0.25,0.5,0.75,1},
+    ylabel={head score}]
+  \addplot[previous score] table[x=step, y=previous, col sep=comma] {data/curves-stories-seed0.csv};
+  \addplot[induction score] table[x=step, y=induction, col sep=comma] {data/curves-stories-seed0.csv};
+  \node[note, text=ink, anchor=south east] at (axis cs:19500,0.75) {previous-token head \storyPrev: \storyPrevScore};
+  \node[note, text=spot, anchor=south east] at (axis cs:19500,0.10) {best induction head \storyInd: \storyIndScore};
+\end{axis}
+\node[head] at ($(a.north west)+(0,0.25)$) {(a)\enspace In-context learning score on TinyStories.};
+\node[head] at ($(b.north west)+(0,0.25)$) {(b)\enspace Heads, scored on repeated tokens.};
+\node[note, anchor=north, align=center] at ($(a.outer south east)!0.5!(b.outer south west)+(0,-0.1)$)
+  {(a) Loss at positions 192--255 of 256-token validation windows minus loss at positions 32--63.\\
+   (b) The synthetic task's scores, on repeated sequences of the 64 most common tokens.};
+\end{tikzpicture}
+\end{figurecanvas}
+\end{document}

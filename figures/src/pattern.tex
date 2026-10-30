@@ -1,0 +1,24 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{latentfig}
+\input{build/pattern-values}
+\begin{document}
+\begin{figurecanvas}
+\begin{tikzpicture}[x=0.074cm, y=0.074cm]
+\foreach \role/\letter/\title [count=\i from 0] in {
+    previous-token/a/{Previous-token head \headPrev.},
+    duplicate-token/b/{Duplicate-token head \headDup.},
+    induction/c/{Induction head \headInd.}} {
+  \begin{scope}[shift={(\i*72,0)}]
+    \input{build/pattern-\role.tikz}
+    \node[head] at (0,\patternsize+5) {(\letter)\enspace \title};
+    \node[note, anchor=north] at (\patternsize/2,-1.5) {key: the position attended to};
+  \end{scope}
+}
+\node[note, anchor=south, rotate=90] at (-1.5,\patternsize/2) {query: the position attending};
+\node[note, anchor=north, align=center] at (100,-9)
+  {Seed 0, one test sequence of \patternsize\ tokens whose last \patternperiod\ repeat the \patternperiod\ before them; grey rules mark where each copy starts.\\
+   Shading: attention weight. Red rings: for each query in the second copy, the key the head's name predicts:\\
+   the previous position, the earlier copy of the current token, and the position just after that earlier copy. Back-hatched: hidden by the causal mask.};
+\end{tikzpicture}
+\end{figurecanvas}
+\end{document}

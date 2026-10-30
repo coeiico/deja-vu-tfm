@@ -1,6 +1,10 @@
 % Roles of this repo's README figures (figure-design.md): which mark or line each recurring
-% role gets, defined once here and used by name in every figure. Roles are told apart by
-% shape and line style; spot is for the one thing a figure is about. For example:
-%   \pgfplotsset{model/.style={series spot}, baseline model/.style={series dashed}}
-%   \pgfplotsset{class one/.style={class open}, class two/.style={class filled}}
-% Never name a role after a TikZ key (baseline, left, label, ...).
+% role gets, defined once here and used by name in every figure.
+\pgfplotsset{
+  induction model/.style={series spot},    % the two-layer model, PyTorch init, one line per seed
+  one layer/.style={series dashed},        % the one-layer baseline (--model.n-layers 1)
+  gpt2 init/.style={series dotted},        % the two-layer model with GPT-2's init (--model.init gpt2)
+  induction score/.style={series spot},    % mean induction score of the induction heads
+  previous score/.style={series ink},      % the previous-token head's score
+  duplicate score/.style={series dashed},  % the duplicate-token head's score
+}
