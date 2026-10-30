@@ -18,6 +18,7 @@ dependencies = [
   'trackio',
   'datasets',
   'tiny-transformer',
+  'tiktoken',
 ]
 
 [dependency-groups]
