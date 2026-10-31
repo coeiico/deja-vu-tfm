@@ -74,8 +74,6 @@ Olsson et al. see the phase change after billions of tokens, about ten times thi
 
 ## How it works
 
-The owner knows the transformer from tiny-transformer. This is what is new here.
-
 - **Induction heads.** To continue `… Harry Potter … Harry` with `Potter`, a model has to find the earlier `Harry` and copy whatever came next. One attention head cannot do that alone: a key at position k knows its own token, not the token before it. So a two-step circuit forms. A layer-0 head first moves information between positions. A layer-1 head then attends, from the current token, to the position just after that token's earlier occurrence, and copies its token into the prediction. That layer-1 head is an induction head.
 - **Composition.** Layer 1 reads the residual stream three times: for its queries, its keys and its values. A layer-0 head's output can feed any of them, which is called Q-, K- or V-composition.
   - **K-composition.** A previous-token head writes "the token before me was x" into every key. The induction head's query "I am x" then matches the right key directly.
